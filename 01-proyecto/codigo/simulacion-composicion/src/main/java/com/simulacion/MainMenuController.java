@@ -39,7 +39,7 @@ public class MainMenuController extends StackPane {
         String[][] cards = {
             {"1", "Distribución Trapezoidal", "Método de composición y transformada inversa"},
             {"2", "Distribución Triangular", "Método de composición y transformada inversa"},
-            {"3", "Simulación TIR", "Evaluación de proyecto de inversión (Monte Carlo)"},
+            {"3", "Simulación TIR", "Evaluación de proyecto de inversión"},
             {"4", "Ejercicio 4", "Próximamente"}
         };
 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TIR Monte Carlo simulation for Compañía X.
+ * TIR simulation for Compañía X.
  *
  * Simulates investment project evaluation with triangular distributions
  * for all uncertain parameters. Calculates IRR (TIR) by bisection method.
