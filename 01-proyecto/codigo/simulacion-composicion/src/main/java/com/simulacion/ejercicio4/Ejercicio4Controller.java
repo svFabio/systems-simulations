@@ -37,7 +37,6 @@ public class Ejercicio4Controller extends VBox {
     private final TextField fieldDays = new TextField(String.valueOf(Ejercicio4Simulador.DEFAULT_DAYS));
     private final Button btnSimular = new Button("Simular");
     private final Button btnLimpiar = new Button("Limpiar");
-    private final Button btnGrafico = new Button("Mostrar Gráfico");
     private final TableView<DayRowView> dayTable = new TableView<>();
     private final TableView<NRowView> nTable = new TableView<>();
     private final ObservableList<DayRowView> dayData = FXCollections.observableArrayList();
@@ -77,17 +76,14 @@ public class Ejercicio4Controller extends VBox {
 
         VBox inputPanel = createInputPanel();
 
-        HBox buttonBox = new HBox(10, btnSimular, btnLimpiar, btnGrafico);
+        HBox buttonBox = new HBox(10, btnSimular, btnLimpiar);
         buttonBox.setAlignment(Pos.CENTER_LEFT);
 
         btnSimular.getStyleClass().add("action-button");
         btnLimpiar.getStyleClass().add("action-button");
-        btnGrafico.getStyleClass().add("action-button");
-        btnGrafico.setDisable(true);
 
         btnSimular.setOnAction(e -> simulate());
         btnLimpiar.setOnAction(e -> clear());
-        btnGrafico.setOnAction(e -> showChart());
 
         optimalLabel.getStyleClass().add("info-label");
         costLabel.getStyleClass().add("info-label");
@@ -264,7 +260,7 @@ public class Ejercicio4Controller extends VBox {
             costLabel.setText(String.format("Costo mínimo anual: $%,.0f", lastResult.minTotalCost()));
             costLabel.setTextFill(Color.web("#cdd6f4"));
 
-            btnGrafico.setDisable(false);
+            showChart();
 
         } catch (NumberFormatException ex) {
             showAlert("Error de formato", "Ingrese números enteros válidos en todos los campos.");
@@ -278,7 +274,6 @@ public class Ejercicio4Controller extends VBox {
         dayData.clear();
         nData.clear();
         lastResult = null;
-        btnGrafico.setDisable(true);
         optimalLabel.setText("");
         costLabel.setText("");
         chartNode.setContent(null);

@@ -30,7 +30,6 @@ public class Ejercicio3Controller extends VBox {
     private final TextField fieldN = new TextField("1000");
     private final Button btnSimular = new Button("Simular");
     private final Button btnLimpiar = new Button("Limpiar");
-    private final Button btnGrafico = new Button("Mostrar Gráfico");
     private final TableView<SimRow> table = new TableView<>();
     private final ObservableList<SimRow> tableData = FXCollections.observableArrayList();
     private final SwingNode chartNode = new SwingNode();
@@ -62,17 +61,14 @@ public class Ejercicio3Controller extends VBox {
 
         VBox inputPanel = createInputPanel();
 
-        HBox buttonBox = new HBox(10, btnSimular, btnLimpiar, btnGrafico);
+        HBox buttonBox = new HBox(10, btnSimular, btnLimpiar);
         buttonBox.setAlignment(Pos.CENTER_LEFT);
 
         btnSimular.getStyleClass().add("action-button");
         btnLimpiar.getStyleClass().add("action-button");
-        btnGrafico.getStyleClass().add("action-button");
-        btnGrafico.setDisable(true);
 
         btnSimular.setOnAction(e -> simulate());
         btnLimpiar.setOnAction(e -> clear());
-        btnGrafico.setOnAction(e -> showChart());
 
         probLabel.getStyleClass().add("info-label");
         decisionLabel.getStyleClass().add("decision-label");
@@ -100,7 +96,7 @@ public class Ejercicio3Controller extends VBox {
         VBox panel = new VBox(8);
         panel.getStyleClass().add("input-panel");
 
-        Label helpText = new Label("Simulación Monte Carlo de TIR para Compañía X. Triangulares para todos los parámetros.");
+        Label helpText = new Label("Evaluación de proyecto de inversión - Compañía X. Triangulares para todos los parámetros.");
         helpText.getStyleClass().add("help-text");
 
         HBox row1 = new HBox(10,
@@ -253,7 +249,7 @@ public class Ejercicio3Controller extends VBox {
                 decisionLabel.setTextFill(Color.RED);
             }
 
-            btnGrafico.setDisable(false);
+            showChart();
 
         } catch (NumberFormatException ex) {
             showAlert("Error de formato", "Ingrese un número entero válido para simulaciones.");
@@ -264,7 +260,6 @@ public class Ejercicio3Controller extends VBox {
         fieldN.setText("1000");
         tableData.clear();
         lastResult = null;
-        btnGrafico.setDisable(true);
         probLabel.setText("");
         decisionLabel.setText("");
         chartNode.setContent(null);
@@ -283,7 +278,7 @@ public class Ejercicio3Controller extends VBox {
 
         JFreeChart chart = EstadisticasUtil.createSimpleHistogram(
             tirData, Ejercicio3Simulador.NUM_BINS, minTIR, maxTIR,
-            "Distribución TIR - Simulación Monte Carlo",
+            "Distribución TIR",
             "TIR (%)", "Frecuencia"
         );
 

@@ -30,7 +30,6 @@ public class Ejercicio1Controller extends VBox {
     private final TextField fieldN = new TextField("10000");
     private final Button btnSimular = new Button("Simular");
     private final Button btnLimpiar = new Button("Limpiar");
-    private final Button btnGrafico = new Button("Mostrar Gráfico");
     private final TableView<SimRow> table = new TableView<>();
     private final ObservableList<SimRow> tableData = FXCollections.observableArrayList();
     private final SwingNode chartNode = new SwingNode();
@@ -58,17 +57,14 @@ public class Ejercicio1Controller extends VBox {
         VBox inputPanel = createInputPanel();
 
         // Buttons
-        HBox buttonBox = new HBox(10, btnSimular, btnLimpiar, btnGrafico);
+        HBox buttonBox = new HBox(10, btnSimular, btnLimpiar);
         buttonBox.setAlignment(Pos.CENTER_LEFT);
 
         btnSimular.getStyleClass().add("action-button");
         btnLimpiar.getStyleClass().add("action-button");
-        btnGrafico.getStyleClass().add("action-button");
-        btnGrafico.setDisable(true);
 
         btnSimular.setOnAction(e -> simulate());
         btnLimpiar.setOnAction(e -> clear());
-        btnGrafico.setOnAction(e -> showChart());
 
         // TabPane
         TabPane tabPane = new TabPane();
@@ -193,7 +189,7 @@ public class Ejercicio1Controller extends VBox {
                 ));
             }
 
-            btnGrafico.setDisable(false);
+            showChart();
 
         } catch (NumberFormatException ex) {
             showAlert("Error de formato", "Ingrese valores numéricos válidos en todos los campos.");
@@ -207,7 +203,6 @@ public class Ejercicio1Controller extends VBox {
         fieldN.setText("10000");
         tableData.clear();
         lastResults = null;
-        btnGrafico.setDisable(true);
         chartNode.setContent(null);
     }
 
