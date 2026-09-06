@@ -40,7 +40,7 @@ public class MainMenuController extends StackPane {
             {"1", "Distribución Trapezoidal", "Método de composición y transformada inversa"},
             {"2", "Distribución Triangular", "Método de composición y transformada inversa"},
             {"3", "Simulación TIR", "Evaluación de proyecto de inversión"},
-            {"4", "Ejercicio 4", "Próximamente"}
+            {"4", "Optimización de Flota", "Número óptimo de camiones"}
         };
 
         for (int i = 0; i < 4; i++) {
