@@ -282,41 +282,61 @@ public class Ejercicio4Controller extends VBox {
     private void showChart() {
         if (lastResult == null || lastResult.nResults().isEmpty()) return;
 
-        XYSeries series = new XYSeries("Costo total");
+        // Three series for trade-off analysis
+        XYSeries seriesFijo = new XYSeries("Costo Fijo Flota");
+        XYSeries seriesVariable = new XYSeries("Costo Flete Externo");
+        XYSeries seriesTotal = new XYSeries("Costo Total Anual");
+
         for (var nr : lastResult.nResults()) {
-            series.add(nr.n(), nr.totalCost());
+            seriesFijo.add(nr.n(), nr.truckCost());
+            seriesVariable.add(nr.n(), nr.freightCost());
+            seriesTotal.add(nr.n(), nr.totalCost());
         }
-        XYSeriesCollection dataset = new XYSeriesCollection(series);
+
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(seriesFijo);
+        dataset.addSeries(seriesVariable);
+        dataset.addSeries(seriesTotal);
 
         JFreeChart chart = ChartFactory.createXYLineChart(
-            "Costo Total Anual vs. Número de Camiones",
+            "Análisis de Trade-off: Flota vs. Flete Externo",
             "Número de camiones (N)",
-            "Costo total anual ($)",
+            "Costo anual ($)",
             dataset,
             PlotOrientation.VERTICAL,
-            false, true, false
+            true, true, false
         );
 
         XYPlot plot = chart.getXYPlot();
-        plot.getRenderer(0).setSeriesPaint(0, new java.awt.Color(70, 130, 180));
-        plot.getRenderer(0).setSeriesStroke(0, new java.awt.BasicStroke(2.5f));
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, true);
+
+        // Serie 0: Costo Fijo Flota — gris oscuro, línea continua
+        renderer.setSeriesPaint(0, new java.awt.Color(100, 100, 100));
+        renderer.setSeriesStroke(0, new java.awt.BasicStroke(2.0f));
+        renderer.setSeriesLinesVisible(0, true);
+        renderer.setSeriesShapesVisible(0, false);
+
+        // Serie 1: Costo Flete Externo — naranja, línea continua
+        renderer.setSeriesPaint(1, new java.awt.Color(230, 126, 34));
+        renderer.setSeriesStroke(1, new java.awt.BasicStroke(2.0f));
+        renderer.setSeriesLinesVisible(1, true);
+        renderer.setSeriesShapesVisible(1, false);
+
+        // Serie 2: Costo Total Anual — azul marino, línea gruesa con puntos
+        renderer.setSeriesPaint(2, new java.awt.Color(30, 80, 160));
+        renderer.setSeriesStroke(2, new java.awt.BasicStroke(3.5f));
+        renderer.setSeriesLinesVisible(2, true);
+        renderer.setSeriesShapesVisible(2, true);
+        renderer.setSeriesShape(2, new java.awt.geom.Ellipse2D.Double(-4, -4, 8, 8));
+
+        plot.setRenderer(renderer);
         plot.setBackgroundPaint(java.awt.Color.WHITE);
         plot.setRangeGridlinePaint(java.awt.Color.LIGHT_GRAY);
         plot.setDomainGridlinePaint(java.awt.Color.LIGHT_GRAY);
 
-        // Highlight optimal point
-        XYSeries optSeries = new XYSeries("Óptimo");
-        optSeries.add(lastResult.optimalN(), lastResult.minTotalCost());
-        dataset.addSeries(optSeries);
-        XYLineAndShapeRenderer optRenderer = new XYLineAndShapeRenderer(false, true);
-        optRenderer.setSeriesPaint(0, java.awt.Color.RED);
-        optRenderer.setSeriesShape(0, new java.awt.geom.Ellipse2D.Double(-5, -5, 10, 10));
-        plot.setDataset(1, dataset);
-        plot.setRenderer(1, optRenderer);
-
         SwingUtilities.invokeLater(() -> {
             ChartPanel panel = new ChartPanel(chart);
-            panel.setPreferredSize(new Dimension(700, 400));
+            panel.setPreferredSize(new Dimension(700, 450));
             chartNode.setContent(panel);
         });
     }
